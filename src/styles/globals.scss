@@ -4,11 +4,14 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  // display:flex;
+  margin:0;
+  padding:0;
 }
 
-.svg-canvas {
-  background-color: cyan;
-}
+// .svg-canvas {
+//   background-color: cyan;
+// }
 
 svg {
   background-color: rgb(248, 248, 248);

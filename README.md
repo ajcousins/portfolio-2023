@@ -20,3 +20,4 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [An introduction to d3.js in 10 basic examples](https://d3-graph-gallery.com/intro_d3js.html)
 - [Perspective transform of SVG paths (four corner distort)](https://stackoverflow.com/questions/12919398/perspective-transform-of-svg-paths-four-corner-distort)
 - [Make a text link in svg](https://stackoverflow.com/questions/34920956/make-text-a-link-in-svg)
+- [D3 in depth - D3 shapes](https://www.d3indepth.com/shapes/)
