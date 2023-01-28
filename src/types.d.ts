@@ -6,7 +6,7 @@ interface Coord {
 
 interface MenuObj {
   text: string;
-  textHeight: number;
+  scale: number;
   xCentre: number;
   yBottom: number;
   path: string;

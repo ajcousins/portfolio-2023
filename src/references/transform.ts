@@ -1,124 +1,3 @@
-//// @ts-nocheck
-// Licence: MIT
-
-// var path_source = $("#path_1").attr("d");
-// // Get bounding box of text path
-// var bounds = $("#path_1")[0].getBoundingClientRect();
-
-// // Make array of coordinates, every array member represent corner of text path
-// var source = new Array(
-// {x:bounds.left,y:bounds.top},
-// {x:bounds.right,y:bounds.top},
-// {x:bounds.right,y:bounds.bottom},
-// {x:bounds.left,y:bounds.bottom}
-// );
-
-// // Create SVG with circles and joining lines
-// var R = Raphael("canvas", 2000, 2000);
-// var l0 = R.path("M10 10L100 100").attr({stroke:"blue","stroke-width":2});
-// var l1 = R.path("M10 10L100 110").attr({stroke:"blue","stroke-width":2});
-// var l2 = R.path("M10 10L100 120").attr({stroke:"blue","stroke-width":2});
-// var l3 = R.path("M10 10L100 130").attr({stroke:"blue","stroke-width":2});
-// var dl0 = R.path("M10 10L100 130").attr({stroke:"red","stroke-width":2});
-// var dl1 = R.path("M10 10L100 130").attr({stroke:"red","stroke-width":2});
-// var c0 = R.circle(100, 100, 10).attr({fill: "blue",stroke: "none"});
-// var c1 = R.circle(100, 110, 10).attr({fill: "blue",stroke: "none"});
-// var c2 = R.circle(100, 120, 10).attr({fill: "blue",stroke: "none"});
-// var c3 = R.circle(100, 130, 10).attr({fill: "blue",stroke: "none"});
-
-// Corner drag functions (start, move, up)
-// var start = function () {
-//     // storing original coordinates
-//     this.ox = this.attr("cx");
-//     this.oy = this.attr("cy");
-// },
-// move = function (dx, dy) {
-//     // move will be called with dx and dy
-//     this.attr({cx: this.ox + dx, cy: this.oy + dy});
-//     updatelines();
-//     if (isPermissible())
-//       update_text();
-//     },
-// up = function () {
-//     // restoring state
-// };
-
-// // Function updates lines between corner circles
-// function updatelines()
-// {
-//     $(l0.node).attr({d:"M"+c0.attr("cx")+","+c0.attr("cy")+"L"+c1.attr("cx")+","+c1.attr("cy")});
-//     $(l1.node).attr({d:"M"+c1.attr("cx")+","+c1.attr("cy")+"L"+c2.attr("cx")+","+c2.attr("cy")});
-//     $(l2.node).attr({d:"M"+c2.attr("cx")+","+c2.attr("cy")+"L"+c3.attr("cx")+","+c3.attr("cy")});
-//     $(l3.node).attr({d:"M"+c3.attr("cx")+","+c3.attr("cy")+"L"+c0.attr("cx")+","+c0.attr("cy")});
-
-//     // Update also diagonal lines
-//     // as you see, the distort is perspectivelly correct
-//     // which means eg. that center of text remains on center
-//     // while distorting
-// $(dl0.node).attr({d:"M"+c0.attr("cx")+","+c0.attr("cy")+"L"+c2.attr("cx")+","+c2.attr("cy")});
-//     $(dl1.node).attr({d:"M"+c1.attr("cx")+","+c1.attr("cy")+"L"+c3.attr("cx")+","+c3.attr("cy")});
-// }
-
-// // Set up drag functionality of circles
-// c0.drag(move, start, up);
-// c1.drag(move, start, up);
-// c2.drag(move, start, up);
-// c3.drag(move, start, up);
-
-// // Place circles on corners of text path
-// c0.attr({cx:source[0].x, cy:source[0].y});
-// c1.attr({cx:source[1].x, cy:source[1].y});
-// c2.attr({cx:source[2].x, cy:source[2].y});
-// c3.attr({cx:source[3].x, cy:source[3].y});
-// updatelines();
-
-// // To fit text path on screen, place circles at certain positions
-// // and update lines between circles and update text path
-// c0.attr({cx:source[0].x+20, cy:source[0].y-100});
-// c1.attr({cx:source[1].x-600, cy:source[1].y-100});
-// c2.attr({cx:source[2].x-700, cy:source[2].y-200});
-// c3.attr({cx:source[3].x+120, cy:source[3].y-200});
-
-// updatelines();
-// update_text();
-
-// function update_text()
-// {
-//     // Make array of destination coordinates, every array member represent corner of text path (the new dragged destination)
-//     var destination=new Array(
-//     {x:c0.attr("cx"),y:c0.attr("cy")},
-//     {x:c1.attr("cx"),y:c1.attr("cy")},
-//     {x:c2.attr("cx"),y:c2.attr("cy")},
-//     {x:c3.attr("cx"),y:c3.attr("cy")}
-//     );
-
-//     // Actual calculation which transfers each coordinate
-//     // of text path from source coordinates to destination
-//     // coordinates.
-//     var path_destination = distort_path(path_source,source,destination);
-//     // Update path on screen
-//     $("#path_1").attr("d",path_destination);
-// }
-
-/*
-    transferPoint()
-
-    Parameters:
-     xI = x coordinate of point in original figure
-     yI = y coordinate of point in original figure
-
-    source = array of corner coordinates of original four-sided figure
-    var source:Array = new Array();
-    source[0] = new Point(0, 0);
-    source[2] = new Point(200,100);
-
-     destination = corner coordinates of destination (perspective distorted) figure
-  Example of destination-array:
-
-    var destination:Array = new Array();
-    destination[n] = new Point(0, 0); //n=0...4
-*/
-
 export function transferPoint(
   xI: number,
   yI: number,
@@ -189,7 +68,6 @@ export function transferPoint(
   var kJF = (yF - yJ) / (xF - xJ); //23
   var kKE = (yE - yK) / (xE - xK); //12
 
-  var xKE;
   if (kJF == kKE) kKE += ADDING;
   var xIu = (kJF * xF - kKE * xE + yE - yF) / (kJF - kKE);
   var yIu = kJF * (xIu - xJ) + yJ;
@@ -200,38 +78,6 @@ export function transferPoint(
   return b;
 }
 
-// isPermissible uses this:
-// function angle(c: Coord, b: Coord, a: Coord) {
-//   var ab = {
-//     x: b.x - a.x,
-//     y: b.y - a.y,
-//   };
-//   var cb = {
-//     x: b.x - c.x,
-//     y: b.y - c.y,
-//   };
-//   var dot = ab.x * cb.x + ab.y * cb.y;
-//   var cross = ab.x * cb.y - ab.y * cb.x;
-//   var alpha = Math.atan2(cross, dot);
-//   return (alpha * 180) / Math.PI;
-// }
-
-// If angle is outside of range 0-180, it is unallowed.
-// The angle means inner angle of every corner.
-// function isPermissible(p)
-// {
-//   var p0 = {x:c0.attr("cx"),y:c0.attr("cy")};
-//   var p1 = {x:c1.attr("cx"),y:c1.attr("cy")};
-//   var p2 = {x:c2.attr("cx"),y:c2.attr("cy")};
-//   var p3 = {x:c3.attr("cx"),y:c3.attr("cy")};
-//   var a0 = angle(p3, p0, p1);
-//   var a1 = angle(p0, p1, p2);
-//   var a2 = angle(p1, p2, p3);
-//   var a3 = angle(p2, p3, p0);
-//   if (!(a0 > 0 && a0 < 180) || !(a1 > 0 && a1 < 180) || !(a2 > 0 && a2 < 180) || !(a3 > 0 && a3 < 180))
-//     return false;
-//   else return true;
-// }
 
 // Function splits path string to coordinates array
 function path_string_to_array(path_str: string): (string | number)[] {
@@ -242,14 +88,6 @@ function path_string_to_array(path_str: string): (string | number)[] {
   return path_arr.map((cmd) => (!cmd.match(patt2) ? parseFloat(cmd) : cmd));
 }
 
-// Function joins array coordinates back to string
-function path_array_to_string(path_arr) {
-  var path_str = path_arr.toString();
-  path_str = path_str.replace(/([0-9]),([-0-9])/g, '$1 $2');
-  path_str = path_str.replace(/([0-9]),([-0-9])/g, '$1 $2'); // for some reason have to do twice
-  path_str = path_str.replace(/,/g, '');
-  return path_str;
-}
 
 // Function distorts path_str from source coordinates
 // to destination coordinates
@@ -259,14 +97,12 @@ export function distort_path(
   destination: Coord[]
 ) {
   var path_arr = path_string_to_array(path_str);
-  console.log('path_arr:', path_arr);
-  // const normalised_path_str = normalise(path_arr);
 
-  var subpath_type = '';
-  var is_num;
-  var xy_counter;
-  var xy;
-  var path_arr2 = new Array();
+  let subpath_type: (number | string) = '';
+  let is_num: boolean;
+  let xy_counter = 0;
+  let isX = false;
+  const  path_arr2 = [];
   var subpath_type_upper;
   var point;
   const pointHistory = [];
@@ -278,7 +114,7 @@ export function distort_path(
       // if current char is a valid letter
       xy_counter = -1;
       subpath_type = curr;
-      subpath_type_upper = subpath_type.toUpperCase();
+      subpath_type_upper = subpath_type.toString().toUpperCase();
       is_num = false;
       if (curr !== 'H' && curr !== 'V') {
         path_arr2.push(curr);
@@ -286,54 +122,51 @@ export function distort_path(
     } // current char is a number
     else {
       // console.log("should be number:", curr);
-
       is_num = true;
       curr = parseFloat(curr);
     }
-    if (xy_counter % 2 == 0) xy = 'x';
-    else xy = 'y';
+    if (xy_counter % 2 === 0) isX = true;
+    else isX = false;
 
-    if (is_num) {
-      // && subpath_type=="q")
-      // console.log(`${curr} is_num within ${subpath_type}`);
-
-      if (subpath_type === 'V') {
-        path_arr2.push('L');
-        const x = pointHistory[pointHistory.length - 1].x;
-        const y = curr;
-        pointHistory.push({ x, y });
-
-        point = transferPoint(x, y, source, destination);
-        path_arr2.push(point.x);
-        path_arr2.push(point.y);
-        // console.log("point:", point);
-      } else if (subpath_type === 'H') {
-        path_arr2.push('L');
-        const x = curr;
-        const y = pointHistory[pointHistory.length - 1].y;
-        pointHistory.push({ x, y });
-
-        point = transferPoint(x, y, source, destination);
-        path_arr2.push(point.x);
-        path_arr2.push(point.y);
-        // console.log("point:", point);
-      } else if (xy == 'y') {
-        const x = parseFloat(path_arr[i - 1]);
-        const y = curr;
-        pointHistory.push({ x, y });
-
-        point = transferPoint(x, y, source, destination);
-        path_arr2.push(point.x);
-        path_arr2.push(point.y);
-        // console.log("point:", point);
-      }
+    if (!is_num) {
+      xy_counter++;
+      continue;
     }
+
+
+    if (subpath_type === 'V') {
+      path_arr2.push('L');
+      const x = pointHistory[pointHistory.length - 1].x;
+      const y = curr;
+      pointHistory.push({ x, y });
+
+      point = transferPoint(x, y, source, destination);
+      path_arr2.push(point.x);
+      path_arr2.push(point.y);
+      // console.log("point:", point);
+    } else if (subpath_type === 'H') {
+      path_arr2.push('L');
+      const x = curr;
+      const y = pointHistory[pointHistory.length - 1].y;
+      pointHistory.push({ x, y });
+
+      point = transferPoint(x, y, source, destination);
+      path_arr2.push(point.x);
+      path_arr2.push(point.y);
+      // console.log("point:", point);
+    } else if (!isX) {
+      const x = parseFloat(path_arr[i - 1]);
+      const y = curr;
+      pointHistory.push({ x, y });
+
+      point = transferPoint(x, y, source, destination);
+      path_arr2.push(point.x);
+      path_arr2.push(point.y);
+      // console.log("point:", point);
+    }
+    
     xy_counter++;
   }
-  console.log('pointHistory:', pointHistory);
 
-  console.log('path_arr2:', path_arr2);
-
-  path_str = path_array_to_string(path_arr2);
-  return path_str;
+  return path_arr2.join(" ");
 }
