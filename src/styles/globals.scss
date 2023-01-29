@@ -18,15 +18,15 @@ svg {
   height: 100%;
 } 
 
-// text {
-//   cursor: pointer;
-//   fill: black;
-//   user-select: none;
+.text-obj-bounds {
+  cursor: pointer;
+  fill: black;
+  user-select: none;
 
-//   &:hover {
-//     fill: orange;
-//   }
-// }
+  &:hover {
+    fill: orange;
+  }
+}
 
 
 .sun {

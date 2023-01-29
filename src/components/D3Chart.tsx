@@ -58,6 +58,11 @@ export default class D3Chart {
     this.textObjDom = Array.from(
       document.querySelectorAll('.text-objs')
     ) as SVGSVGElement[];
+
+    // const textObjBounds = this.textObjDom.forEach(obj => {
+    //   obj.classList.add('text-obj-bounds')
+    // })
+
     this.textObjOriginalBounds = this.textObjDom.map((obj) => {
       const bounds = obj.getBoundingClientRect();
 
@@ -73,8 +78,8 @@ export default class D3Chart {
   }
 
   update(mousePos?: Coord) {
-    console.log("update");
-    
+    console.log('update');
+
     const svg = d3.select('.svg-canvas').attr('height', window.innerHeight - 4);
     const sun = d3.select('.sun');
 
@@ -101,6 +106,14 @@ export default class D3Chart {
         rotate(-90)
       `
     );
+
+    const textObjRects = this.textObjDom.forEach((obj) => {
+      console.log("obj:", obj);
+      
+      return obj.getBoundingClientRect();
+    });
+    // console.log("textObjRects:", textObjRects);
+    
 
     this.textObjDom.forEach((obj, i) => {
       svg.append('path').attr('class', `shadow-${i}`);

@@ -21,7 +21,7 @@ export const shadowPoints = (textObj: SVGSVGElement, origin: Coord, originalBoun
     elevation,
     { min: 0, max: 0.6 },
     { min: 20, max: 300 }
-  );
+  )
 
   const ha = bounds.bottom - origin.y;
   const hb = ha + shadowHeight;
