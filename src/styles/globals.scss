@@ -4,24 +4,21 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  // display:flex;
   margin:0;
   padding:0;
 }
-
-// .svg-canvas {
-//   background-color: cyan;
-// }
 
 svg {
   background-color: #ffe9ab;
   height: 100%;
 } 
 
-.text-obj-bounds {
+.text-objs {
   cursor: pointer;
   fill: black;
   user-select: none;
+  stroke: #00000000;
+  stroke-width: 18px;
 
   &:hover {
     fill: orange;
