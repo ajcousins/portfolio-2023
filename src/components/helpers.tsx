@@ -14,14 +14,18 @@ export const scaleTranslate = (
   );
 };
 
-export const shadowPoints = (textObj: SVGSVGElement, origin: Coord, originalBounds: Coord[]): string => {
+export const shadowPoints = (
+  textObj: SVGSVGElement,
+  origin: Coord,
+  originalBounds: Coord[]
+): string => {
   const bounds = textObj.getBoundingClientRect();
   const elevation = origin.y / window.innerHeight;
   const shadowHeight = scaleTranslate(
     elevation,
     { min: 0, max: 0.6 },
     { min: 20, max: 300 }
-  )
+  );
 
   const ha = bounds.bottom - origin.y;
   const hb = ha + shadowHeight;
@@ -44,6 +48,41 @@ export const shadowPoints = (textObj: SVGSVGElement, origin: Coord, originalBoun
   const originalPath =
     (textObj.children[0] as SVGElement).getAttribute('d') ?? '';
 
-
   return distort_path(originalPath, originalBounds, destPointsFmt);
+};
+
+export const referencePoints = (
+  obj: Coord,
+  origin: Coord,
+  baseline: number
+): Coord => {
+  const ha = obj.y - origin.y;
+  const hb = baseline - origin.y;
+  const wa = obj.x < origin.x ? origin.x - obj.x : obj.x - origin.x;
+  const wb = (wa * hb) / ha;
+  const pointX = obj.x < origin.x ? origin.x - wb : origin.x + wb;
+  return { x: pointX, y: baseline };
+};
+
+export const newPointFromReference = (
+  obj: Coord,
+  refPoint: Coord,
+  origin: Coord
+): Coord => {
+  const ha = obj.y - origin.y;
+  const hb = refPoint.y - origin.y;
+  const wb =
+    refPoint.x < origin.x ? origin.x - refPoint.x : refPoint.x - origin.x;
+  const wa = (wb * ha) / hb;
+  const pointX = refPoint.x < origin.x ? origin.x - wa : origin.x + wa;
+  return { x: pointX, y: obj.y };
+};
+
+export const getTextScale = (
+  originalBounds: Coord[],
+  windowHeight: number,
+  targetHeightPercentage: number,
+): number => {
+  const originalHeightPercentage = originalBounds[1].x / windowHeight;
+  return targetHeightPercentage / originalHeightPercentage;
 };
