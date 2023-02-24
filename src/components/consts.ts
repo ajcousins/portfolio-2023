@@ -3,7 +3,6 @@ import { scaleTranslate } from './helpers';
 export const menuObjects: MenuObj[] = [
   {
     text: 'PORTFOLIO',
-    scale: 1.7, //pixels
     heightPercent: 0.65, // percent of window height
     xCentre: 26, // percent of window width
     yBottom: 85, // percent of window height
@@ -11,7 +10,6 @@ export const menuObjects: MenuObj[] = [
   },
   {
     text: 'ABOUT',
-    scale: 1,
     heightPercent: 0.22,
     xCentre: 59,
     yBottom: 61,
@@ -19,7 +17,6 @@ export const menuObjects: MenuObj[] = [
   },
   {
     text: 'CONTACT',
-    scale: 1.35,
     heightPercent: 0.43,
     xCentre: 67,
     yBottom: 73,

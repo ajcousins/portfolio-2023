@@ -5,6 +5,7 @@ import {
   referencePoints,
   shadowPoints,
   getTextScale,
+  scaleTranslate,
 } from './helpers';
 
 export default class D3Chart {
@@ -23,6 +24,7 @@ export default class D3Chart {
   refPointsTrans: Coord[];
   origin: Coord = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   baselineY: number;
+  sunBrightness: number = 1;
 
   constructor(element: any) {
     const svg = d3
@@ -166,7 +168,7 @@ export default class D3Chart {
         y: (obj.yBottom / 100) * window.innerHeight,
       }));
       this.anchors = [...this.anchorsTrans];
-      this.refPointsTrans = this.refPoints.map((p, i) => ({
+      this.refPointsTrans = this.refPoints.map((p) => ({
         y: p.y,
         x: p.x,
       }));
@@ -182,9 +184,31 @@ export default class D3Chart {
     //   .attr('cx', (_, i) => this.refPointsTrans[i].x)
     //   .attr('cy', this.baselineY);
 
+    if (this.SUN.y > this.origin.y) {
+      const sunBounds = { min: this.origin.y, max: window.innerHeight * 0.59 };
+      const brightnessDomain = { min: 1, max: 0 };
+      this.sunBrightness = scaleTranslate(
+        this.SUN.y,
+        sunBounds,
+        brightnessDomain
+      );
+    } else {
+      this.sunBrightness = 1;
+    }
+
+    const dimHex = Math.floor(
+      scaleTranslate(
+        this.sunBrightness,
+        { min: 0, max: 1 },
+        { min: 0, max: 255 }
+      )
+    ).toString(16);
+    const dimHexFormat = dimHex.length === 1 ? `0${dimHex}` : dimHex;
+    sun.style('fill', `#ffffff${dimHexFormat}`);
+
     d3.selectAll('.text-objs').attr(
       'transform',
-      (obj: any, i: number) => `
+      (_, i: number) => `
         translate(${this.anchorsTrans[i].x}, 
           ${this.anchorsTrans[i].y}) 
         scale(${getTextScale(
@@ -204,7 +228,7 @@ export default class D3Chart {
             ? ''
             : shadowPoints(obj, this.SUN, this.textObjOriginalBounds[i])
         )
-        .style('fill', '#aa9b72')
+        .style('fill', `#aa9b72${dimHexFormat}`)
         .style('mix-blend-mode', 'darken');
     });
   }
