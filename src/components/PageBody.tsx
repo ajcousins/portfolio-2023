@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { ReactNode } from 'react';
 
-export default function PageBody({children}: any) {
+interface IProps {
+  children: ReactNode;
+  title: string;
+}
+
+export default function PageBody({ children, title }: IProps) {
   return (
-    <div className='page-body'>{children}</div>
-  )
+    <>
+      <div className="page-body">{children}</div>
+      <div className="page-title">{title}</div>
+    </>
+  );
 }

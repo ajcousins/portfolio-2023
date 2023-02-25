@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;700&display=swap');
 $background: #ffe9ab;
 $link-color: #ffffff;
+$page-margin: 8em;
 
 * {
   box-sizing: border-box;
@@ -77,6 +78,17 @@ svg {
 }
 
 .page-body {
-  margin: 12em 8em;
+  margin: 12em $page-margin;
   border: 0.1pt solid #00000022;
+}
+
+.page-title {
+  font-size: 4rem;
+  font-weight: 900;
+  position: fixed;
+  // width: $page-margin;
+  transform-origin: 0 0;
+  transform: rotate(-90deg) translate(-4rem);
+  bottom: 0;
+  // background-color: red;
 }

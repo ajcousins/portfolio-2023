@@ -6,7 +6,7 @@ export default function portfolio() {
   return (
     <>
       <Nav />
-      <PageBody>
+      <PageBody title='PORTFOLIO'>
       <div>PORTFOLIO</div>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis
