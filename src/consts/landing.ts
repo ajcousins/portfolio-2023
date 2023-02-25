@@ -1,5 +1,3 @@
-import { scaleTranslate } from './helpers';
-
 export const colours = {
   menuObjects: '000000',
   shadows: 'aa9b72',

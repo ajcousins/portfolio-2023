@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { menuObjects, xTranslationMax, sunObject, colours } from './consts';
+import { menuObjects, xTranslationMax, sunObject, colours } from '../consts/landing';
 import {
   newPointFromReference,
   referencePoints,
@@ -23,6 +23,7 @@ export default class D3Chart {
   refPoints: Coord[]; // projected reference points: origin -> anchor -> baselineY
   refPointsTrans: Coord[]; // ref points translated
   baselineY: number;
+  isTransitioning: boolean = false;
 
   constructor(element: any) {
     this.canvasD3 = d3
@@ -106,7 +107,7 @@ export default class D3Chart {
   }
 
   update(mousePos?: Coord) {
-    if (!this.sunDom || !this.textObjDom) return;
+    if (this.isTransitioning || !this.sunDom || !this.textObjDom) return;
 
     this.canvasD3.attr('height', window.innerHeight - 4);
     this.origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -195,6 +196,8 @@ export default class D3Chart {
 
   transitionOut(urlTarget: string) {
     const TRANSITION_LENGTH = 1000;
+
+    this.isTransitioning = true;
 
     this.sunD3.transition().duration(TRANSITION_LENGTH).attr('r', 0);
 
