@@ -86,3 +86,14 @@ export const getTextScale = (
   const originalHeightPercentage = originalBounds[1].x / windowHeight;
   return targetHeightPercentage / originalHeightPercentage;
 };
+
+export const numToHex = (value: number): string => {
+  const hex = Math.floor(
+    scaleTranslate(
+      value,
+      { min: 0, max: 1 },
+      { min: 0, max: 255 }
+    )
+  ).toString(16);
+  return hex.length === 1 ? `0${hex}` : hex;
+}

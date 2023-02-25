@@ -1,3 +1,7 @@
+html {
+  background-color: #ffe9ab;
+}
+
 * {
   margin: 0;
 }
@@ -15,10 +19,9 @@ svg {
 
 .text-objs {
   cursor: pointer;
-  fill: black;
   user-select: none;
   stroke: #00000000;
-  stroke-width: 18px;
+  stroke-width: 18px; // invisible thick stroke to widen selction area
 
   &:hover {
     fill: white;
@@ -28,4 +31,8 @@ svg {
 
 .sun {
   cursor: pointer;
+}
+
+.animation-shrink {
+  transform:scale(1.5)
 }

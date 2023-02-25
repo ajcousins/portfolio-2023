@@ -1,8 +1,16 @@
 import { scaleTranslate } from './helpers';
 
+export const colours = {
+  menuObjects: '000000',
+  shadows: 'aa9b72',
+  sun: 'ffffff',
+  background: '', // value controled via CSS
+}
+
 export const menuObjects: MenuObj[] = [
   {
     text: 'PORTFOLIO',
+    url: '/portfolio',
     heightPercent: 0.65, // percent of window height
     xCentre: 26, // percent of window width
     yBottom: 85, // percent of window height
@@ -10,6 +18,7 @@ export const menuObjects: MenuObj[] = [
   },
   {
     text: 'ABOUT',
+    url: '/about',
     heightPercent: 0.22,
     xCentre: 59,
     yBottom: 61,
@@ -17,6 +26,7 @@ export const menuObjects: MenuObj[] = [
   },
   {
     text: 'CONTACT',
+    url: '/contact',
     heightPercent: 0.43,
     xCentre: 67,
     yBottom: 73,
@@ -25,3 +35,9 @@ export const menuObjects: MenuObj[] = [
 ];
 
 export const xTranslationMax: number = 100;
+
+export const sunObject = {
+  r: 8,
+  x: 0,
+  y: 0,
+};

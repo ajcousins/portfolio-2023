@@ -1,33 +1,31 @@
 import * as d3 from 'd3';
-import { menuObjects, xTranslationMax } from './consts';
+import { menuObjects, xTranslationMax, sunObject, colours } from './consts';
 import {
   newPointFromReference,
   referencePoints,
   shadowPoints,
   getTextScale,
   scaleTranslate,
+  numToHex,
 } from './helpers';
 
 export default class D3Chart {
-  SUN = {
-    r: 8,
-    x: 0,
-    y: 0,
-  };
-
   sunDom: SVGSVGElement | null = null;
+  sunD3: d3.Selection<SVGCircleElement, unknown, null, undefined>;
+  canvasD3: d3.Selection<SVGSVGElement, unknown, null, undefined>;
   textObjDom: SVGSVGElement[] | null = null;
+  textObjD3: d3.Selection<d3.BaseType, MenuObj, SVGSVGElement, unknown>;
   textObjOriginalBounds: Coord[][];
-  anchors: Coord[];
-  anchorsTrans: Coord[];
-  refPoints: Coord[];
-  refPointsTrans: Coord[];
-  origin: Coord = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  baselineY: number;
   sunBrightness: number = 1;
+  origin: Coord = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  anchors: Coord[]; // text object anchor points
+  anchorsTrans: Coord[]; // text object anchor points translated
+  refPoints: Coord[]; // projected reference points: origin -> anchor -> baselineY
+  refPointsTrans: Coord[]; // ref points translated
+  baselineY: number;
 
   constructor(element: any) {
-    const svg = d3
+    this.canvasD3 = d3
       .select(element)
       .append('svg')
       .attr('width', '100%')
@@ -49,67 +47,45 @@ export default class D3Chart {
       this.update();
     });
 
-    svg
+    this.sunD3 = this.canvasD3
       .append('circle')
       .attr('class', 'sun')
       .attr('cx', window.innerWidth / 2)
       .attr('cy', 0)
-      .attr('r', this.SUN.r)
-      .attr('fill', '#ffffff');
+      .attr('r', sunObject.r)
+      .attr('fill', `#${colours.sun}`);
 
-    const textObjs = svg.selectAll('.text-objs').data(menuObjects as MenuObj[]);
-    textObjs
+    this.textObjD3 = this.canvasD3
+      .selectAll('.text-objs')
+      .data(menuObjects as MenuObj[]);
+    this.textObjD3
       .enter()
       .append('g')
       .attr('class', 'text-objs')
       .attr('alignment-baseline', 'middle')
-      .attr('fill', '#000000CC')
+      .attr('fill', `#${colours.menuObjects}`)
       .append('path')
-      .attr('d', (obj) => obj.path);
+      .attr('d', (obj) => obj.path)
+      .on('click', (obj) => {
+        this.transitionOut(obj.target.__data__.url);
+      });
 
+    /**
+     * 'refPoints' need to be translated along the same Y line at fixed distances from
+     * each other. The translated refPoints (refPointsTrans) are then used to calculate
+     * an updated anchor position (anchorsTrans) for parallax effect.
+     */
     this.anchors = menuObjects.map((obj) => ({
       x: (obj.xCentre / 100) * window.innerWidth,
       y: (obj.yBottom / 100) * window.innerHeight,
     }));
     this.anchorsTrans = [...this.anchors];
-
-    // Origin
-    // svg
-    //   .append('circle')
-    //   .attr('class', 'origin')
-    //   .attr('cx', this.origin.x)
-    //   .attr('cy', this.origin.y)
-    //   .attr('r', '3px')
-    //   .attr('fill', 'red');
-
-    // Anchors
-    // this.anchors.forEach((anchor, i) => {
-    //   svg
-    //     .append('circle')
-    //     .attr('class', 'anchor')
-    //     .attr('cx', anchor.x)
-    //     .attr('cy', anchor.y)
-    //     .attr('r', '3px')
-    //     .attr('fill', 'red');
-    // });
-
-    // Reference points
     this.baselineY = window.innerHeight - 20;
     this.baselineY = 700;
     this.refPoints = this.anchors.map(
       (obj): Coord => referencePoints(obj, this.origin, this.baselineY)
     );
     this.refPointsTrans = [...this.refPoints];
-
-    this.refPoints.forEach((p) => {
-      svg
-        .append('circle')
-        .attr('class', 'ref-points')
-        .attr('cx', p.x)
-        .attr('cy', p.y)
-        .attr('r', '3px')
-        .attr('fill', 'blue');
-    });
 
     this.sunDom = document.querySelector('.sun') as SVGSVGElement;
     this.textObjDom = Array.from(
@@ -130,22 +106,19 @@ export default class D3Chart {
   }
 
   update(mousePos?: Coord) {
-    const svg = d3.select('.svg-canvas').attr('height', window.innerHeight - 4);
-    const sun = d3.select('.sun');
-    // const origin = d3.select('.origin');
-    // const anchorDots = d3.selectAll('.anchor');
-    // const refPointDots = d3.selectAll('.ref-points');
+    if (!this.sunDom || !this.textObjDom) return;
+
+    this.canvasD3.attr('height', window.innerHeight - 4);
     this.origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-    if (!this.sunDom || !this.textObjDom) return;
     const sunRect = this.sunDom.getBoundingClientRect();
-    this.SUN.y = sunRect.y + sunRect.height / 2;
+    sunObject.y = sunRect.y + sunRect.height / 2;
 
     if (mousePos) {
       // sun
-      this.SUN.x = sunRect.x + sunRect.width / 2;
-      sun.attr('cy', mousePos.y * 0.6);
-      sun.attr('cx', this.origin.x);
+      sunObject.x = sunRect.x + sunRect.width / 2;
+      this.sunD3.attr('cy', mousePos.y * 0.6);
+      this.sunD3.attr('cx', this.origin.x);
 
       // menu object xTranslate
       const ratioFromOrigin =
@@ -154,15 +127,14 @@ export default class D3Chart {
         ...p,
         x: p.x + ratioFromOrigin * xTranslationMax,
       }));
-      this.anchorsTrans = this.refPointsTrans.map((refPoint, i) => {
-        return newPointFromReference(this.anchors[i], refPoint, this.origin);
-      });
+      this.anchorsTrans = this.refPointsTrans.map((refPoint, i) => 
+        newPointFromReference(this.anchors[i], refPoint, this.origin)
+      );
     } else {
-      // window resize
-      this.SUN.x = this.origin.x;
-      sun.attr('cy', this.SUN.y > 0 ? this.SUN.y - 3 : 0);
-      sun.attr('cx', this.SUN.x);
-      // origin.attr('cy', this.origin.y).attr('cx', this.origin.x);
+      // else window resize
+      sunObject.x = this.origin.x;
+      this.sunD3.attr('cy', sunObject.y > 0 ? sunObject.y - 3 : 0);
+      this.sunD3.attr('cx', sunObject.x);
       this.anchorsTrans = menuObjects.map((obj) => ({
         x: (obj.xCentre / 100) * window.innerWidth,
         y: (obj.yBottom / 100) * window.innerHeight,
@@ -177,18 +149,12 @@ export default class D3Chart {
         (obj): Coord => referencePoints(obj, this.origin, this.baselineY)
       );
     }
-    // anchorDots
-    //   .attr('cx', (_, i) => this.anchorsTrans[i].x)
-    //   .attr('cy', (_, i) => this.anchorsTrans[i].y);
-    // refPointDots
-    //   .attr('cx', (_, i) => this.refPointsTrans[i].x)
-    //   .attr('cy', this.baselineY);
 
-    if (this.SUN.y > this.origin.y) {
+    if (sunObject.y > this.origin.y) {
       const sunBounds = { min: this.origin.y, max: window.innerHeight * 0.59 };
       const brightnessDomain = { min: 1, max: 0 };
       this.sunBrightness = scaleTranslate(
-        this.SUN.y,
+        sunObject.y,
         sunBounds,
         brightnessDomain
       );
@@ -196,15 +162,8 @@ export default class D3Chart {
       this.sunBrightness = 1;
     }
 
-    const dimHex = Math.floor(
-      scaleTranslate(
-        this.sunBrightness,
-        { min: 0, max: 1 },
-        { min: 0, max: 255 }
-      )
-    ).toString(16);
-    const dimHexFormat = dimHex.length === 1 ? `0${dimHex}` : dimHex;
-    sun.style('fill', `#ffffff${dimHexFormat}`);
+    const dimHex = numToHex(this.sunBrightness);
+    this.sunD3.style('fill', `#${colours.sun}${dimHex}`);
 
     d3.selectAll('.text-objs').attr(
       'transform',
@@ -214,22 +173,45 @@ export default class D3Chart {
         scale(${getTextScale(
           this.textObjOriginalBounds[i],
           window.innerHeight,
-          menuObjects[i].heightPercent,
+          menuObjects[i].heightPercent
         )}) 
         rotate(-90)
       `
     );
 
     this.textObjDom.forEach((obj, i) => {
-      svg.append('path').attr('class', `shadow-${i}`);
+      this.canvasD3.append('path')
+        .attr('class', `shadow-${i}`)
       d3.select(`.shadow-${i}`)
         .attr('d', () =>
-          this.anchorsTrans[i].y < this.SUN.y
+          this.anchorsTrans[i].y < sunObject.y
             ? ''
-            : shadowPoints(obj, this.SUN, this.textObjOriginalBounds[i])
+            : shadowPoints(obj, sunObject, this.textObjOriginalBounds[i])
         )
-        .style('fill', `#aa9b72${dimHexFormat}`)
+        .style('fill', `#${colours.shadows}${dimHex}`)
         .style('mix-blend-mode', 'darken');
     });
+  }
+
+  transitionOut(urlTarget: string) {
+    const TRANSITION_LENGTH = 1000;
+
+    this.sunD3.transition().duration(TRANSITION_LENGTH).attr('r', 0);
+
+    d3.selectAll('.text-objs')
+      .transition()
+      .duration(TRANSITION_LENGTH)
+      .style('fill', `#${colours.menuObjects}00`)
+
+    this.textObjDom?.forEach((_, i) => {
+      d3.select(`.shadow-${i}`)
+        .transition()
+        .duration(TRANSITION_LENGTH)
+        .style('fill', `#${colours.shadows}00`)
+    })
+
+    setTimeout(() => {
+      window.location = urlTarget as unknown as Location;
+    }, TRANSITION_LENGTH);
   }
 }
