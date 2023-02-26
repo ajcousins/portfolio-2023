@@ -6,7 +6,7 @@ export default function about() {
   return (
     <>
       <Nav />
-      <PageBody>
+      <PageBody title="ABOUT">
     <div>About</div>
     </PageBody>
     </>
