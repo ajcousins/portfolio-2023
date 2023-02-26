@@ -2,6 +2,7 @@
   "name": "d3-sandbox",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ajcousins.github.io/portfolio-2023",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
