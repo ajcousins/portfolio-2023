@@ -8,7 +8,7 @@ export const colours = {
 export const menuObjects: MenuObj[] = [
   {
     text: 'PORTFOLIO',
-    url: '/portfolio',
+    url: '/portfolio-2023/portfolio',
     heightPercent: 0.65, // percent of window height
     xCentre: 26, // percent of window width
     yBottom: 85, // percent of window height
@@ -16,7 +16,7 @@ export const menuObjects: MenuObj[] = [
   },
   {
     text: 'ABOUT',
-    url: '/about',
+    url: '/portfolio-2023/about',
     heightPercent: 0.22,
     xCentre: 59,
     yBottom: 61,
@@ -24,7 +24,7 @@ export const menuObjects: MenuObj[] = [
   },
   {
     text: 'CONTACT',
-    url: '/contact',
+    url: '/portfolio-2023/contact',
     heightPercent: 0.43,
     xCentre: 67,
     yBottom: 73,
