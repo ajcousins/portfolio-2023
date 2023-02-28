@@ -44,6 +44,11 @@ export default class D3Chart {
       mousePos.x = e.clientX;
       this.update(mousePos);
     });
+    screenLog.addEventListener('touchmove', (e) => {
+      mousePos.y = e.targetTouches[0].clientY;
+      mousePos.x = e.targetTouches[0].clientX;
+      this.update(mousePos);
+    });
     window.addEventListener('resize', () => {
       this.update();
     });

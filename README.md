@@ -21,3 +21,4 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [Perspective transform of SVG paths (four corner distort)](https://stackoverflow.com/questions/12919398/perspective-transform-of-svg-paths-four-corner-distort)
 - [Make a text link in svg](https://stackoverflow.com/questions/34920956/make-text-a-link-in-svg)
 - [D3 in depth - D3 shapes](https://www.d3indepth.com/shapes/)
+- [How to host a Hugo or Next.js site on GitHub Pages](https://dev.to/github/how-to-host-a-static-nextjs-site-on-github-pages-4pe0)
