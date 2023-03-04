@@ -1,5 +1,10 @@
 import * as d3 from 'd3';
-import { menuObjects, xTranslationMax, sunObject, colours } from '../consts/landing';
+import {
+  menuObjects,
+  xTranslationMax,
+  sunObject,
+  colours,
+} from '../consts/landing';
 import {
   newPointFromReference,
   referencePoints,
@@ -8,6 +13,8 @@ import {
   scaleTranslate,
   numToHex,
 } from './helpers';
+
+const ANIMATION_FRAME_RATE = 1000 / 30; // FPS
 
 export default class D3Chart {
   sunDom: SVGSVGElement | null = null;
@@ -24,6 +31,8 @@ export default class D3Chart {
   refPointsTrans: Coord[]; // ref points translated
   baselineY: number;
   isTransitioning: boolean = false;
+  userIsTouching: boolean = false;
+  screenLog: SVGSVGElement;
 
   constructor(element: any) {
     this.canvasD3 = d3
@@ -38,20 +47,14 @@ export default class D3Chart {
       y: 0,
     };
 
-    const screenLog = document.querySelector('svg') as SVGSVGElement;
-    screenLog.addEventListener('mousemove', (e) => {
+    this.screenLog = document.querySelector('svg') as SVGSVGElement;
+    this.screenLog.addEventListener('mousemove', (e) => {
       mousePos.y = e.clientY;
       mousePos.x = e.clientX;
       this.update(mousePos);
     });
-    screenLog.addEventListener('touchmove', (e) => {
-      mousePos.y = e.targetTouches[0].clientY;
-      mousePos.x = e.targetTouches[0].clientX;
-      this.update(mousePos);
-    });
-    window.addEventListener('resize', () => {
-      this.update();
-    });
+
+    this.screenLog.addEventListener('touchstart', (e) => this.onTouch(), false);
 
     this.sunD3 = this.canvasD3
       .append('circle')
@@ -112,7 +115,13 @@ export default class D3Chart {
   }
 
   update(mousePos?: Coord) {
-    if (this.isTransitioning || !this.sunDom || !this.textObjDom) return;
+    if (
+      this.isTransitioning ||
+      !this.sunDom ||
+      !this.textObjDom ||
+      this.userIsTouching
+    )
+      return;
 
     this.canvasD3.attr('height', window.innerHeight - 4);
     this.origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -133,7 +142,7 @@ export default class D3Chart {
         ...p,
         x: p.x + ratioFromOrigin * xTranslationMax,
       }));
-      this.anchorsTrans = this.refPointsTrans.map((refPoint, i) => 
+      this.anchorsTrans = this.refPointsTrans.map((refPoint, i) =>
         newPointFromReference(this.anchors[i], refPoint, this.origin)
       );
     } else {
@@ -168,6 +177,64 @@ export default class D3Chart {
       this.sunBrightness = 1;
     }
 
+    this.updateShadows();
+  }
+
+  transitionOut(urlTarget: string) {
+    const TRANSITION_LENGTH = 1000;
+    this.isTransitioning = true;
+    this.sunD3.transition().duration(TRANSITION_LENGTH).attr('r', 0);
+
+    d3.selectAll('.text-objs')
+      .transition()
+      .duration(TRANSITION_LENGTH)
+      .style('fill', `#${colours.menuObjects}00`);
+
+    this.textObjDom?.forEach((_, i) => {
+      d3.select(`.shadow-${i}`)
+        .transition()
+        .duration(TRANSITION_LENGTH)
+        .style('fill', `#${colours.shadows}00`);
+    });
+
+    setTimeout(() => {
+      window.location = urlTarget as unknown as Location;
+    }, TRANSITION_LENGTH);
+  }
+
+  onTouch() {
+    if (!this.userIsTouching) {
+      this.onFirstTouch();
+    }
+    /**
+     * Ought to save this in state somewhere for rest of app to know
+     * and so animation doesn't need to wait for touch when landing page
+     * reloads.
+     */
+    this.userIsTouching = true;
+  }
+
+  onFirstTouch() {
+    const TRANSITION_LENGTH = 3000;
+
+    this.sunD3
+      .transition()
+      .duration(TRANSITION_LENGTH)
+      .attr('cy', this.origin.y)
+      .attr('r', sunObject.r * 4);
+
+    const move = setInterval(() => {
+      const sunRect = this.sunDom!.getBoundingClientRect();
+      sunObject.y = sunRect.y + sunRect.height / 2;
+      this.updateShadows();
+    }, ANIMATION_FRAME_RATE);
+
+    setTimeout(() => {
+      clearInterval(move);
+    }, TRANSITION_LENGTH);
+  }
+
+  updateShadows() {
     const dimHex = numToHex(this.sunBrightness);
     this.sunD3.style('fill', `#${colours.sun}${dimHex}`);
 
@@ -185,9 +252,8 @@ export default class D3Chart {
       `
     );
 
-    this.textObjDom.forEach((obj, i) => {
-      this.canvasD3.append('path')
-        .attr('class', `shadow-${i}`)
+    this.textObjDom?.forEach((obj, i) => {
+      this.canvasD3.append('path').attr('class', `shadow-${i}`);
       d3.select(`.shadow-${i}`)
         .attr('d', () =>
           this.anchorsTrans[i].y < sunObject.y
@@ -197,29 +263,5 @@ export default class D3Chart {
         .style('fill', `#${colours.shadows}${dimHex}`)
         .style('mix-blend-mode', 'darken');
     });
-  }
-
-  transitionOut(urlTarget: string) {
-    const TRANSITION_LENGTH = 1000;
-
-    this.isTransitioning = true;
-
-    this.sunD3.transition().duration(TRANSITION_LENGTH).attr('r', 0);
-
-    d3.selectAll('.text-objs')
-      .transition()
-      .duration(TRANSITION_LENGTH)
-      .style('fill', `#${colours.menuObjects}00`)
-
-    this.textObjDom?.forEach((_, i) => {
-      d3.select(`.shadow-${i}`)
-        .transition()
-        .duration(TRANSITION_LENGTH)
-        .style('fill', `#${colours.shadows}00`)
-    })
-
-    setTimeout(() => {
-      window.location = urlTarget as unknown as Location;
-    }, TRANSITION_LENGTH);
   }
 }
