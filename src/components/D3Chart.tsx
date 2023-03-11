@@ -13,6 +13,7 @@ import {
   scaleTranslate,
   numToHex,
 } from './helpers';
+import { getCookie, setCookie } from '@/helpers/cookies';
 
 const ANIMATION_FRAME_RATE = 1000 / 30; // FPS
 
@@ -52,6 +53,9 @@ export default class D3Chart {
       mousePos.y = e.clientY;
       mousePos.x = e.clientX;
       this.update(mousePos);
+    });
+    window.addEventListener('resize', () => {
+      this.update();
     });
 
     this.screenLog.addEventListener('touchstart', (e) => this.onTouch(), false);
@@ -112,6 +116,9 @@ export default class D3Chart {
     });
 
     this.update();
+
+    const isTouchScreen = getCookie('isTouchScreen')
+    if (isTouchScreen) this.onTouch();
   }
 
   update(mousePos?: Coord) {
@@ -204,23 +211,18 @@ export default class D3Chart {
 
   onTouch() {
     if (!this.userIsTouching) {
-      this.onFirstTouch();
+      this.moveSun(this.origin.y, 3000);
     }
-    /**
-     * Ought to save this in state somewhere for rest of app to know
-     * and so animation doesn't need to wait for touch when landing page
-     * reloads.
-     */
     this.userIsTouching = true;
+    setCookie('isTouchScreen', '1', 30)
   }
 
-  onFirstTouch() {
-    const TRANSITION_LENGTH = 3000;
-
+  moveSun(yPos: number, transitionTime: number) {
     this.sunD3
       .transition()
-      .duration(TRANSITION_LENGTH)
-      .attr('cy', this.origin.y)
+      .ease(d3.easeCubicInOut)
+      .duration(transitionTime)
+      .attr('cy', yPos)
       .attr('r', sunObject.r * 4);
 
     const move = setInterval(() => {
@@ -231,10 +233,14 @@ export default class D3Chart {
 
     setTimeout(() => {
       clearInterval(move);
-    }, TRANSITION_LENGTH);
+      const top = window.innerHeight / 4;
+      if (yPos > top) this.moveSun(top, 6000);
+      else this.moveSun(this.origin.y, 6000);
+    }, transitionTime);
   }
 
   updateShadows() {
+    if (this.isTransitioning) return;
     const dimHex = numToHex(this.sunBrightness);
     this.sunD3.style('fill', `#${colours.sun}${dimHex}`);
 
