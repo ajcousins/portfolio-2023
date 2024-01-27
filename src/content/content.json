@@ -1,0 +1,229 @@
+{
+  "data": [
+    {
+      "title": "Light Lookup",
+      "subHeading": "A search tool for Lighting Designers and specifiers of technical lighting equipment.",
+      "id": "light-lookup",
+      "layout": "project-layout-text-left-1",
+      "images": ["light-lookup-scrn-01.png", "light-lookup-scrn-02.png"],
+      "icon": "../images/icons/light-lookup_icon.png",
+      "links": [
+        {
+          "label": "Demo",
+          "link": "https://light-lookup.pages.dev/#/"
+        },
+        { "label": "Code", "link": "https://github.com/ajcousins/light-lookup" }
+      ],
+      "stack": [
+        "React-JS",
+        "TypeScript",
+        "GraphQL",
+        "Apollo",
+        "Redux",
+        "Node-JS",
+        "Express",
+        "Mongo-DB",
+        "React-Router",
+        "Sass",
+        "MaterialUI",
+        "Firebase",
+        "Three-JS",
+        "Jest"
+      ],
+      "explanation": [
+        "A full stack web application which queries a database of technical lighting products, intended for lighting designers and specifiers of technical lighting equipment, as a way to find suitable products to meet very specific design requirements.",
+        "The app is exciting for me, as a person with several years of lighting design experience, I believe it can be the perfect tool to help plug a designer's gap in market knowledge. There is currently no go-to search engine that lighting designers can consult that focuses exclusively on architectural products. A few search tools currently catalogue decorative products, but are not able to filter down to technical specifications.",
+        "The project was built with React and TypeScript on the front end, with Redux used for state management. The back end was built with Node.js, Express with a GraphQL endpoint which queries a MongoDB database.",
+        "Up coming updates include registration for designer and manufacturer user accounts. This will allow designers rate and review products, and for manufacturers to be responsible for their own database of products. Currently anyone can register as a manufacturer and upload products anonymously. Further updates will also include more technical search filters, such as lumen outputs, electrical requirements and control system compatibilities."
+      ]
+    },
+    {
+      "title": "Gallery",
+      "subHeading": "A Gallery and e-commerce shop",
+      "id": "gallery",
+      "layout": "project-layout-text-left-1",
+      "images": ["gallery-scrn-01.png", "gallery-scrn-02.png"],
+      "icon": "../images/icons/gallery_icon.png",
+      "links": [
+        {
+          "label": "Demo",
+          "link": "https://ajcousins.github.io/gallery-app/#/"
+        },
+        {
+          "label": "Dashboard Demo",
+          "link": "https://ajcousins.github.io/gallery-app/#/dashboard"
+        },
+        { "label": "Code", "link": "https://github.com/ajcousins/gallery-app" }
+      ],
+      "stack": ["React-JS", "Redux", "React-Router", "Sass", "Firebase"],
+      "explanation": [
+        "This project was built as a way to help a friend sell their artwork online. The application is loosely modelled on Instagram, organising images into collections, where each collection has a ‘front/ title’ image which displays in a grid forming their overall portfolio.",
+        "All images and collections can be viewed by all anonymous users at the ‘front of house’ site. Images and collections can be created, updated and deleted through the dashboard, which requires email and password authentication to access.",
+        "Google’s Firebase was leveraged for its authentication, Firestore database and Storage to securely save images. React and React-Router were used on the front-end, with Redux used to manage global state.",
+        "This project is still a work in progress. Next steps include adding a functioning basket, checkout and secure payment capabilities using either PayPal or Stripe."
+      ]
+    },
+    {
+      "title": "Twittr",
+      "subHeading": "A Twitter Clone",
+      "id": "twittr",
+      "layout": "project-layout-text-left-1",
+      "images": ["twittr-scrn-01.png", "twittr-scrn-02.png"],
+      "icon": "../images/icons/twitter_icon.png",
+      "links": [
+        {
+          "label": "Live",
+          "link": "https://hydro-eds-18702.herokuapp.com/"
+        },
+        {
+          "label": "Code",
+          "link": "https://github.com/ajcousins/odinbook"
+        }
+      ],
+      "stack": [
+        "Node-JS",
+        "Express",
+        "AXIOS",
+        "JWT",
+        "Mongo-DB",
+        "React-JS",
+        "Sass",
+        "AWS"
+      ],
+      "explanation": [
+        "This project aims to clone the existing social media application: Twitter. Here I was able to focus exclusively on the code and how the technologies interfaced, as the design was already taken care of.",
+        "Back-end tasks included building a rest API, database management, JWT authentication with cookies, parsing upload information using Multer and interfacing with AWS S3 for secure image storage.",
+        "The project involved solving a few problems with regards to database relationships between Tweet (tweet-replies and re-tweets) and User (following and follower) models.",
+        "This was also my first time using Sass and the BEM class naming system, which helped better organise my CSS. Sass was especially useful for managing global colours as variables throughout the app."
+      ]
+    },
+    {
+      "title": "Meal Planner",
+      "subHeading": "Food Management App",
+      "id": "meal-planner",
+      "layout": "project-layout-text-left-1",
+      "images": ["meal-scrn-01.png", "meal-scrn-02.png"],
+      "icon": "../images/icons/meal-planner_icon.png",
+      "links": [
+        {
+          "label": "Live",
+          "link": "https://powerful-depths-88188.herokuapp.com/"
+        },
+        {
+          "label": "Code",
+          "link": "https://github.com/ajcousins/meals-manager"
+        }
+      ],
+      "stack": ["Node-JS", "Express", "Mongo-DB", "Pug", "Passport-JS"],
+      "explanation": [
+        "An application which manages food items put in the fridge (or any other location) and orders items to ensure foods that are near expiry get eaten. The idea was to address the problem of food items unnecessarily going off at the back of the fridge.",
+        "With this app I was able to put newly learned back-end skills into practise, such as simple database management: creating users, locations and food items; as well as authentication using Passport-JS.js.",
+        "All pages are server-side rendered through the use of Pug templates."
+      ]
+    },
+    {
+      "title": "Pepper Kitchen",
+      "subHeading": "Hot Sauce Online Store",
+      "id": "pepper-kitchen",
+      "layout": "project-layout-text-left-1",
+      "images": ["pk-scrn-01.png", "pk-scrn-02.png"],
+      "icon": "../images/icons/pepper-kitchen_icon.png",
+      "links": [
+        {
+          "label": "Live",
+          "link": "https://ajcousins.github.io/pk-shop/"
+        },
+        {
+          "label": "Code",
+          "link": "https://github.com/ajcousins/pk-shop"
+        }
+      ],
+
+      "stack": ["React-JS", "React-Router"],
+      "explanation": [
+        "A simple multi-page React application using React Router to direct routes and React Parallax for the scroll effect.",
+        "These technologies have enabled me to recreate a website I had previously designed on Squarespace for a hot sauce company I had helped create in 2018. At the company I was responsible for the majority of the creative elements, including design and production of the packaging, marketing material and website. The company is no longer selling hot sauce and the original website is no longer live, but thankfully this new application can now live for free on GitHub as a personal tribute."
+      ]
+    },
+    {
+      "title": "Weather",
+      "subHeading": "A Weather App",
+      "id": "weather",
+      "layout": "project-layout-text-left-2",
+      "images": [
+        "weather-scrn-01.png",
+        "weather-scrn-02.png",
+        "weather-scrn-03.png",
+        "weather-scrn-04.png",
+        "weather-sketch-01.png"
+      ],
+      "icon": "../images/icons/weather_icon.png",
+      "links": [
+        {
+          "label": "Live",
+          "link": "https://ajcousins.github.io/weather-app/"
+        },
+        {
+          "label": "Code",
+          "link": "https://github.com/ajcousins/weather-app"
+        }
+      ],
+      "stack": ["JavaScript"],
+      "explanation": [
+        "A simple weather application which calls on the openweathermap.org API for data covering the next 7 days. I took this opportunity to learn about CSS transitions, animations and SVGs which I think work particularly well for this app. The design inspiration is from the weather graphic shown at the end of the BBC weather forecast."
+      ]
+    },
+    {
+      "title": "Noughts & Crosses",
+      "subHeading": "Unbeatable AI using the Minimax algorithm",
+      "id": "noughts-and-crosses",
+      "layout": "project-layout-central-1",
+      "images": ["noughts-scrn-01.png"],
+      "icon": "../images/icons/tictactoe_icon.png",
+      "links": [
+        {
+          "label": "Live",
+          "link": "https://ajcousins.github.io/tictactoe/"
+        },
+        {
+          "label": "Code",
+          "link": "https://github.com/ajcousins/tictactoe"
+        }
+      ],
+
+      "stack": ["JavaScript"],
+      "explanation": [
+        "This was my first attempt at implementing AI through the Minimax algorithm (set opponent to 'Hard Computer'), which recursively evaluates the board for each side, returning the best move for any given position."
+      ]
+    },
+    {
+      "title": "Metric Cook Book",
+      "id": "metric-cook-book",
+      "layout": "project-layout-text-left-1",
+      "images": ["metric-scrn-01.png", "metric-scrn-02.png"],
+      "subHeading": "",
+      "icon": "../images/icons/metriccookbook_icon.png",
+      "links": [
+        {
+          "label": "Live",
+          "link": "https://metriccookbook.herokuapp.com/"
+        },
+        {
+          "label": "Code",
+          "link": "https://github.com/ajcousins/Metric-Cookbook"
+        },
+        {
+          "label": "Video",
+          "link": "https://www.youtube.com/watch?v=IwiIrlaTZU0"
+        }
+      ],
+
+      "stack": ["Python", "Flask", "SQLite", "JavaScript"],
+      "explanation": [
+        "Submission for my CS50x final project: Cook Book, which is an online app which processes and converts recipe quantities with a range of different units. The app was intended to solve the problem of having to deal with a range of different cooking units for recipes over the internet, with the majority of American recipes using imperial units. The app allows a user to simply paste in the ingredients list with quantities, and for each item to be automatically converted to metric units (or vice-versa, to imperial). The app also allows scaling of recipes to accommodate different serving numbers.",
+        "The project uses Flask, a back-end Python framework, to handle the processing of data, which is stored in a SQL database (SQLite). Simple JavaScript is also used on the front-end to render changes to serving quantities.",
+        "CS50x is a self-paced online introductory Computer Science course created and run by Harvard University. The course teaches students how to think algorithmically and solve problems efficiently. The course introduces topics on algorithms, data structures, resource management, security and web programming."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="passport" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="150px" height="150px" viewBox="0 0 150 150" enable-background="new 0 0 150 150" xml:space="preserve">
+<g id="Group">
+	<g id="Shape">
+		<g transform="translate(400.000000, 350.000000)">
+			<path opacity="0.15" d="M-325-337.708c-27.717,0-50.167,22.449-50.167,50.167h25.084c0-13.847,11.236-25.084,25.083-25.084
+				V-337.708L-325-337.708z"/>
+			<path opacity="0.4" d="M-274.834-287.541c0-27.718-22.449-50.167-50.166-50.167v25.083c13.846,0,25.082,11.237,25.082,25.084
+				H-274.834L-274.834-287.541z"/>
+			<path opacity="0.5" d="M-325-237.375c27.717,0,50.166-22.449,50.166-50.166h-25.084c0,13.846-11.236,25.083-25.082,25.083
+				V-237.375L-325-237.375z"/>
+			<path d="M-350.083-237.375v-50.166h-25.084v75.249H-325v-25.083H-350.083z"/>
+		</g>
+	</g>
+</g>
+</svg>

@@ -1,10 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap');
 $background: #ffe9ab;
 $link-color: #ffffff;
 $page-margin: 8em;
 
 * {
   box-sizing: border-box;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1em;
 }
 
 html {
